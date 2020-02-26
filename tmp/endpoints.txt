@@ -1,0 +1,1 @@
+{"move": "https://lambda-treasure-hunt.herokuapp.com/api/adv/move/","dash": "https://lambda-treasure-hunt.herokuapp.com/api/adv/dash/","recall":"https://lambda-treasure-hunt.herokuapp.com/api/adv/recall/"}
