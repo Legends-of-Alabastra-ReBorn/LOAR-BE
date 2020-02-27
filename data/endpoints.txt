@@ -1,0 +1,17 @@
+{
+    "move": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/move/", "actions": ["direction","next_room_id"]},
+    "dash": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/dash/", "actions": ["direction", "num_rooms", "next_room_ids"]},
+    "recall": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/recall/", "actions": []},
+    "examine": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/examine/", "actions": ["name"]},
+    "warp": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/warp", "actions": []},
+    "take": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/take/", "actions": ["name"]},
+    "drop": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/drop/", "actions": ["name"]},
+    "sell": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/sell/", "actions": ["name", "confirm"]},
+    "status": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/status/", "actions": []},
+    "mine": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/bc/mine/", "actions": ["proof"]},
+    "last_proof": {"type": "GET", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/bc/last_proof", "actions": []},
+    "pray": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/pray/", "actions": []},
+    "transmogrify": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/transmogrify/", "actions": ["name"]},
+    "wear": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/wear/", "actions": ["name"]},
+    "change_name": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/", "actions": ["name", "confirm"]}
+}
