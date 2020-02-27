@@ -107,4 +107,4 @@ def next_move(start, end, world, abilities=()):
     }
     return command
 
-print('path:', shortest_path(0,157, 'overworld', ('dash')))
+print('path:', shortest_path(0,55, 'overworld', ('dash')))
