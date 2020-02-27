@@ -48,6 +48,7 @@ def get_room_cooldown(room, world):
     return 30
 
 def shortest_path(start, end, world, abilities=()):
+    print('start', start)
     if start is end: return None
     if start > 999 or start < 0 or end > 999 or end < 0:
         print("room out of bounds, try again")
@@ -62,6 +63,8 @@ def shortest_path(start, end, world, abilities=()):
     end = str(end)
     path = {'path': [], 'weight': None}
     queue.enqueue({'room': start, 'path': [], 'weight': 0})
+    if start != '0' and 'recall' in abilities:
+        queue.enqueue({'room': '0', 'path': ['recall'], 'weight': 15})
     visited = {}
 
     while queue.size() > 0:
@@ -107,4 +110,4 @@ def next_move(start, end, world, abilities=()):
     }
     return command
 
-print('path:', shortest_path(0,55, 'overworld', ('dash')))
+print('path:', shortest_path(24,55, 'overworld', ('dash','recall')))
