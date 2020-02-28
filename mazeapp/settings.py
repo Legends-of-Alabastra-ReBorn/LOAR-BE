@@ -25,7 +25,7 @@ SECRET_KEY = 'njni=)6*g-3#y4vq!7a(@qxy05&yx14m9c=mj1-v_f@2sif!9q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['alabastra-reborn.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,7 +45,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -80,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'maze',
         'USER': 'postgres',
-        'PASSWORD': 'number1',
+        'PASSWORD': 'Cc3058366',
         'HOST': 'localhost'
     }
 }

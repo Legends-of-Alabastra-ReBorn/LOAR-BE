@@ -25,7 +25,7 @@ def valid_proof(last_proof, proof, difficulty):
     guess_hash = hashlib.sha256(guess).hexdigest()
     return guess_hash[:difficulty] == "0" * difficulty
 
-LAST_PROOF = 98486941
+LAST_PROOF = 55658102
 DIFFICULTY = 6
 
 print(proof_of_work(LAST_PROOF, DIFFICULTY))
