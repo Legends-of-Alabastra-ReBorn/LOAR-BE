@@ -13,5 +13,7 @@
     "pray": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/pray/", "actions": []},
     "transmogrify": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/transmogrify/", "actions": ["name"]},
     "wear": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/wear/", "actions": ["name"]},
-    "change_name": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/", "actions": ["name", "confirm"]}
+    "change_name": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/change_name/", "actions": ["name", "confirm"]},
+    "info": {"type": "GET", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/init/", "actions": []},
+    "status": {"type": "POST", "endpoint": "https://lambda-treasure-hunt.herokuapp.com/api/adv/status/", "actions": []}
 }

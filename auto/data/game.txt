@@ -1,0 +1,1 @@
+{"mining": true, "mining_room": 376, "last_proof": 53271239, "difficulty": 6, "next_proof": 12803622}

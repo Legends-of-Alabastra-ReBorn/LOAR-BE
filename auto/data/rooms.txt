@@ -1,0 +1,12 @@
+{
+    "origin": "0",
+    "shop": "1",
+    "flight": "22",
+    "well": "55",
+    "warp": "374",
+    "dash": "461",
+    "name_changer": "467",
+    "recall": "492",
+    "transmogrifier": "495",
+    "dark_well": "555"
+}

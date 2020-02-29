@@ -2,24 +2,10 @@ import sys
 from pathlib import Path
 import json
 
-sys.path.insert(1, './utilities')
-sys.path.insert(1, '../data')
-from util import Queue
+from utilities import Queue, Load_Files
 
-def load_files(files):
-    maps = {}
-    data_folder = Path('../data/')
-    for f in files:
-        with open(f'{data_folder}/{f}.txt') as map_data:
-            maps[f] = json.load(map_data)
-    if len(files) == 1:
-        maps = maps[files[0]]
-    return maps
-maps = load_files(['overworld','underworld'])
-endpoints = load_files(['endpoints'])
-
-# #print map
-# for k,v in map.items(): print(k,v)
+maps = Load_Files(['overworld','underworld'])
+endpoints = Load_Files(['endpoints'])
 
 #determine cooldown of entire path
 def get_cooldown(path, world, abilities, DEBUG=False):
@@ -47,16 +33,16 @@ def get_room_cooldown(room, world):
     if 'cooldown' in maps[world][room]: return maps[world][room]['cooldown']
     return 30
 
-def shortest_path(start, end, world, abilities=()):
-    print('start', start)
-    if start is end: return None
-    if start > 999 or start < 0 or end > 999 or end < 0:
+def shortest_path(start, end, abilities=()):
+    if int(start) == int(end): return None
+    if int(start) > 999 or int(start) < 0 or int(end) > 999 or int(end) < 0:
         print("room out of bounds, try again")
         return None
-    if start < 499 and end > 499 or start > 499 and end < 499:
-        print('rooms are in different worlds, try again')
+    if 'warp' not in abilities and (int(start) < 499 and int(end) > 499 or int(start) > 499 and int(end) < 499):
+        print('you need the warp ability for that, bruh')
         return None
     world = 'overworld' if start < 500 else 'underworld'
+
     #initialize
     queue = Queue()
     start = str(start)
@@ -92,22 +78,3 @@ def shortest_path(start, end, world, abilities=()):
                 queue.enqueue(next_room)
 
     return path['path']
-
-#finds shortest path and returns the next command
-def next_move(start, end, world, abilities=()):
-    path = shortest_path(start, end, world, abilities)
-    API_KEY = None
-    command = {
-        'json': {
-            'direction': path[0][1],
-            'next_room_id': path[0][0]
-        },
-        'endpoint': endpoints['move'],
-        'header': {
-            'Content-Type': 'application/json',
-            'Authorization': f'Token {API_KEY}'
-        }
-    }
-    return command
-
-print('path:', shortest_path(24,55, 'overworld', ('dash','recall')))

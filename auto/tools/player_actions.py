@@ -1,0 +1,99 @@
+import json
+import time
+import requests
+
+from shortest_path import shortest_path
+from utilities import Get_Request_Header, Load_Files, Save_File
+
+def Move_To(player_token, direction, room_id=None):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['move']['endpoint']
+    data = {'direction': direction, 'next_room_id': str(room_id)}
+    response = requests.post(url = endpoint, headers = header, data = json.dumps(data)).json()
+    time.sleep(response['cooldown'])
+    return response
+
+def Dash(player_token, direction, room_ids):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['dash']['endpoint']
+    next_room_ids = ','.join(room_ids)
+    data = json.dumps({'direction': direction, 'num_rooms': str(len(room_ids)), 'next_room_ids': next_room_ids})
+    response = requests.post(url = endpoint, headers = header, data = data).json()
+    time.sleep(response['cooldown'])
+    return response
+
+def Recall(player_token):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['recall']['endpoint']
+    response = requests.post(url = endpoint, headers = header).json()
+    time.sleep(response['cooldown'])
+    return response
+
+def Examine(player_token, item):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['examine']['endpoint']
+    data = json.dumps({'name': item})
+    response = requests.post(url = endpoint, headers = header, data = data).json()
+    time.sleep(response['cooldown'])
+    return response
+
+def Get_Last_Proof(player_token):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['last_proof']['endpoint']
+    response = requests.get(url = endpoint, headers = header).json()
+    time.sleep(response['cooldown'])
+    return response
+
+def Send_Proof(player_token, proof):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['mine']['endpoint']
+    data = json.dumps({'proof': int(proof)})
+    response = requests.post(url = endpoint, headers = header, data = data).json()
+    print('mining response', response)
+    time.sleep(response['cooldown'])
+    return response
+
+def Warp(player_token, abilities):
+    if 'warp' not in abilities:
+        print('this player cant warp, bruh')
+        return None
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['warp']['endpoint']
+    response = requests.post(url = endpoint, headers = header).json()
+    time.sleep(response['cooldown'])
+    return response
+
+def Get_Clue(player):
+    well_room = 55 if player.current_room < 500 else 555
+    if player.current_room != well_room:
+        player.traverse(well_room)
+    return player.examine('WELL')['description'].split('\n')[2:]
+
+def Traverse(player, destination):
+    #find a path to the destination
+    path = shortest_path(player.current_room, destination, player.abilities)
+    print(f'{player.name} is traveling to room {destination}')
+    print(f"{player.name}'s path: {path}")
+
+    while path is not None:
+        #must be faster to teleport to the beginning
+        if path[0] is 'recall' and 'recall' in player.abilities:
+            player.recall()
+            print(f'{player.name} recalled to room 0')
+
+        elif 'dash' in player.abilities and len(path) > 1 and path[0][1] == path[1][1]:
+            room_ids = []
+            current_direction = path[0][1]
+            for room in path:
+                if room[1] == current_direction: room_ids.append(room[0])
+                else: break
+            room_info = player.dash_to(current_direction, room_ids)
+            print(f'{player.name} dashed through {room_ids} to room {room_ids[-1]}')
+        
+        else:
+            room_info = player.move_to(path[0][1], path[0][0])
+            print(f'{player.name} moved {path[0][1]} to room {path[0][0]}')
+
+        path = shortest_path(player.current_room, destination, player.abilities)
+    
+    print(f'{player.name} has arrived at room {destination}.')
