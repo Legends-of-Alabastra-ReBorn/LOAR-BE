@@ -24,5 +24,12 @@ def Get_Player_Status(player_name):
     time.sleep(response['cooldown'])
     return response
 
+def Get_Coin_Balance(player_token):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['balance']['endpoint']
+    response = requests.get(url = endpoint, headers = header).json()
+    time.sleep(response['cooldown'])
+    return int(float(response['messages'][0].split(' ')[-3]))
+
 def Get_Player_Abilities(player_name):
     return Get_Player_Status(player_name)['abilities']

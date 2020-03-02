@@ -12,7 +12,8 @@ class Game:
     dark_well_room = 555
 
     #tools
-    def mine(self):
+    def mine(self, last_proof):
+        Game.last_proof = last_proof
         Game.next_proof = Mine(Game.last_proof, Game.difficulty)
         return Game.next_proof
     def decipher_clue(self, clue, current_room = 0):

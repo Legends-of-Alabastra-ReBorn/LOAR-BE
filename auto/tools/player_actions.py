@@ -37,6 +37,14 @@ def Examine(player_token, item):
     time.sleep(response['cooldown'])
     return response
 
+def Take(player_token, item):
+    header = Get_Request_Header(player_token)
+    endpoint = Load_Files(['endpoints'])['take']['endpoint']
+    data = json.dumps({'name': item})
+    response = requests.post(url = endpoint, headers = header, data = data).json()
+    time.sleep(response['cooldown'])
+    return response
+
 def Get_Last_Proof(player_token):
     header = Get_Request_Header(player_token)
     endpoint = Load_Files(['endpoints'])['last_proof']['endpoint']
@@ -49,7 +57,6 @@ def Send_Proof(player_token, proof):
     endpoint = Load_Files(['endpoints'])['mine']['endpoint']
     data = json.dumps({'proof': int(proof)})
     response = requests.post(url = endpoint, headers = header, data = data).json()
-    print('mining response', response)
     time.sleep(response['cooldown'])
     return response
 
@@ -69,19 +76,22 @@ def Get_Clue(player):
         player.traverse(well_room)
     return player.examine('WELL')['description'].split('\n')[2:]
 
-def Traverse(player, destination):
+def Traverse(player, destination, take_items=False, use_abilities=True):
+    abilities = player.abilities if use_abilities else []
     #find a path to the destination
-    path = shortest_path(player.current_room, destination, player.abilities)
+    path = shortest_path(player.current_room, destination, abilities)
     print(f'{player.name} is traveling to room {destination}')
     print(f"{player.name}'s path: {path}")
 
+    room_info = None
+
     while path is not None:
         #must be faster to teleport to the beginning
-        if path[0] is 'recall' and 'recall' in player.abilities:
+        if path[0] is 'recall' and 'recall' in abilities:
             player.recall()
             print(f'{player.name} recalled to room 0')
 
-        elif 'dash' in player.abilities and len(path) > 1 and path[0][1] == path[1][1]:
+        elif 'dash' in abilities and len(path) > 1 and path[0][1] == path[1][1]:
             room_ids = []
             current_direction = path[0][1]
             for room in path:
@@ -94,6 +104,11 @@ def Traverse(player, destination):
             room_info = player.move_to(path[0][1], path[0][0])
             print(f'{player.name} moved {path[0][1]} to room {path[0][0]}')
 
-        path = shortest_path(player.current_room, destination, player.abilities)
+        if take_items:
+            if 'items' in room_info:
+                items = room_info['items']
+                for item in items: print(player.take(item))
+
+        path = shortest_path(player.current_room, destination, abilities)
     
     print(f'{player.name} has arrived at room {destination}.')

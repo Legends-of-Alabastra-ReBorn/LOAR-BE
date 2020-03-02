@@ -8,19 +8,32 @@ class Player(Game):
         self.auth = Get_Player_Token(name)
         self.current_room = Get_Player_Info(name)['room_id']
         self.inventory = []
+        self.coins = Get_Coin_Balance(self.auth)
         self.abilities = Get_Player_Abilities(name)
 
     #move player
+    def get_status(self):
+        return Get_Player_Status(self.name)
     def move_to(self, direction, destination):
-        self.current_room = Move_To(self.auth, direction, destination)['room_id']
+        room_info = Move_To(self.auth, direction, destination)
+        self.current_room = room_info['room_id']
+        return room_info
     def dash_to(self, direction, room_ids):
-        self.current_room = Dash(self.auth, direction, room_ids)['room_id']
+        room_info = Dash(self.auth, direction, room_ids)
+        self.current_room = room_info['room_id']
+        return room_info
     def recall(self):
-        self.current_room = Recall(self.auth)['room_id']
+        room_info = Recall(self.auth)
+        self.current_room = room_info['room_id']
+        return room_info
     def warp(self):
-        self.current_room = Warp(self.auth, self.abilities)['room_id']
-    def traverse(self, destination):
-        Traverse(self, destination)
+        room_info = Warp(self.auth, self.abilities)
+        self.current_room = room_info['room_id']
+        return room_info
+    def traverse(self, destination, take_items=False, use_abilities=True):
+        Traverse(self, destination, take_items, use_abilities)
+    def take(self, item):
+        return Take(self.auth, item)['messages']
 
     #game changers
     def examine(self, item='WELL'):
@@ -29,5 +42,9 @@ class Player(Game):
         last_proof = Get_Last_Proof(self.auth)
         self.set_last_proof(last_proof['proof'])
         self.set_difficulty(last_proof['difficulty'])
-    def send_proof(self):
-        _ = Send_Proof(self.auth, self.next_proof)
+    def send_proof(self, proof=None):
+        if proof is None: proof = self.next_proof
+        res = Send_Proof(self.auth, proof)
+        if 'messages' in res and res['messages'][0] == 'New Block Forged':
+            self.coins += 1
+        return res
