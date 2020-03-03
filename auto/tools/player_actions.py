@@ -2,8 +2,8 @@ import json
 import time
 import requests
 
-from shortest_path import shortest_path
-from utilities import Get_Request_Header, Load_Files, Save_File
+from .shortest_path import shortest_path
+from .utilities import Get_Request_Header, Load_Files, Save_File
 
 def Move_To(player_token, direction, room_id=None):
     header = Get_Request_Header(player_token)

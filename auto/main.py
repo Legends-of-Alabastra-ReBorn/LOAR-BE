@@ -2,9 +2,9 @@ import multiprocessing as mp
 import sys
 import time
 
-sys.path.insert(1, './tools')
-from player import Player
-from game import Game
+# sys.path.insert(1, './tools')
+from .tools.player import Player
+from .tools.game import Game
 
 def miner(last_proof, next_proof, miner_name):
     print(f'initializing miner {miner_name}')
@@ -73,4 +73,6 @@ def main():
                 process.start()
                 processes[pid] = {'process': process, 'player': p['player'], 'instance': p['instance']}
 
-main()
+if __name__ == '__main__':
+    # freeze_support() here if program needs to be frozen
+    main()  # execute this only when run directly, not when imported!

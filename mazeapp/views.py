@@ -1,6 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import requests
+import sys
+sys.path.append('..')
+from auto.main import main
 
 @api_view(["POST"])
 def current_location(request):
@@ -20,3 +23,8 @@ def current_location(request):
     data = r.json()
     print(data)
     return Response(data)
+
+@api_view(["POST"])
+def start(request):
+    main()
+    return Response('done son')

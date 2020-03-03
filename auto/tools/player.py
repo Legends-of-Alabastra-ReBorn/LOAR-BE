@@ -1,6 +1,6 @@
-from game import Game
-from player_info import *
-from player_actions import *
+from .game import Game
+from .player_info import *
+from .player_actions import *
 
 class Player(Game):
     def __init__(self, name):

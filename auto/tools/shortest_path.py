@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import json
 
-from utilities import Queue, Load_Files
+from .utilities import Queue, Load_Files
 
 maps = Load_Files(['overworld','underworld'])
 endpoints = Load_Files(['endpoints'])

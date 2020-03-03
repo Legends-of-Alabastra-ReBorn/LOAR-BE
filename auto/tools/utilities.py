@@ -1,7 +1,8 @@
 from pathlib import Path
 import json
+import os
 
-data_folder = Path('./data/')
+data_folder = Path('auto/data')
 
 def Get_Request_Header(player_token):
     return {'Content-Type': 'application/json', 'Authorization': player_token}

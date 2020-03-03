@@ -1,5 +1,5 @@
 import sys
-from game_actions import *
+from .game_actions import *
 
 class Game:
     #game variables

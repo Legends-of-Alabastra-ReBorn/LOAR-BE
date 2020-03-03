@@ -1,7 +1,7 @@
 import requests
 import time
 
-from utilities import Load_Files, Get_Request_Header
+from .utilities import Load_Files, Get_Request_Header
 
 def Get_Player_Token(player_name):
     players = Load_Files(['players'])

@@ -2,7 +2,7 @@ import hashlib
 import random
 import sys
 
-from cpu import CPU
+from .cpu import CPU
 
 def Mine(last_proof, difficulty):
     def valid_proof(last_proof, proof, difficulty):
