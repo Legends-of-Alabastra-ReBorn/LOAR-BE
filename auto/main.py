@@ -1,10 +1,19 @@
 import multiprocessing as mp
 import sys
 import time
+import pusher
 
 # sys.path.insert(1, './tools')
 from .tools.player import Player
 from .tools.game import Game
+
+pusher_client = pusher.Pusher(
+  app_id='957271',
+  key='486260c7fadf87293227',
+  secret='d2ba08d29c8aa4df42ef',
+  cluster='us2',
+  ssl=True
+)
 
 def miner(last_proof, next_proof, miner_name):
     print(f'initializing miner {miner_name}')
@@ -38,6 +47,7 @@ def runner(last_proof, next_proof, player_name):
             res = player.send_proof(proof)
             if len(res['errors']) == 0:
                 print(f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}')
+                pusher_client.trigger('my-channel', 'my-event', {'message': f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}'})
                 player.last_proof()
                 last_proof.value = player.get_last_proof()
                 break
