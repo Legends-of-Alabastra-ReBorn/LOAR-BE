@@ -1,11 +1,11 @@
 import multiprocessing as mp
+import sys
 import time
 import pusher
-from shutdown import *
+
 # sys.path.insert(1, './tools')
 from .tools.player import Player
 from .tools.game import Game
-from .mulligan import toggle
 
 pusher_client = pusher.Pusher(
   app_id='957271',
@@ -14,7 +14,6 @@ pusher_client = pusher.Pusher(
   cluster='us2',
   ssl=True
 )
-
 def miner(last_proof, next_proof, miner_name):
     print(f'initializing miner {miner_name}')
     miner = Game()
@@ -27,7 +26,6 @@ def miner(last_proof, next_proof, miner_name):
             miner.mine(current_proof)
             print(f'{miner_name} found proof {miner.get_next_proof()}')
             next_proof.value = miner.get_next_proof()
-
 def runner(last_proof, next_proof, player_name):
     print(f'initializing runner {player_name}')
     player = Player(player_name)
@@ -54,25 +52,20 @@ def runner(last_proof, next_proof, player_name):
             if 'errors' in res and res['errors'][0] == 'There is no coin here: +100s':
                 print(f'!!!WRONG MINING ROOM!!!')
                 break
-
 def snitch(mining_room, player_name):
     print('snitch')
 
 def main(status):
-    # if status == "return":
-    #     # Forces computer to shutdown
-    #     shutdown(force = True)
-
     print('-------STARTING SCRIPT-------')
     players = [('carlos', miner), ('mike', runner),('dustin', runner),('miguel', runner),('doug', runner)]
     processes = {}
     last_proof = mp.Value('i', 0)
     next_proof = mp.Value('i', 0)
     n = 0
-
     for player in players:
         instance = player[1]
         p = mp.Process(target=instance, args=(last_proof, next_proof, player[0]))
+        p.start()
         p.start()   
         processes[n] = {'process': p, 'player': player[0], 'instance': instance}
         n += 1
@@ -87,7 +80,3 @@ def main(status):
                 process = mp.Process(target=p['instance'], args=(last_proof, next_proof, p['player']))
                 process.start()
                 processes[pid] = {'process': process, 'player': p['player'], 'instance': p['instance']}
-        
-# if __name__ == '__main__':
-#     # freeze_support() here if program needs to be frozen
-#     main()  # execute this only when run directly, not when imported!
