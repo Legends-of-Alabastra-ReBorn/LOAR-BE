@@ -65,7 +65,6 @@ def main(status):
     for player in players:
         instance = player[1]
         p = mp.Process(target=instance, args=(last_proof, next_proof, player[0]))
-        p.start()
         p.start()   
         processes[n] = {'process': p, 'player': player[0], 'instance': instance}
         n += 1
