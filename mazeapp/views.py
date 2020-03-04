@@ -13,10 +13,7 @@ def current_location(request):
     get_headers = {
         "Authorization": f"Token {apiKey}"
     }
-    move_headers = {
-        "Authorization": f"Token {apiKey}",
-        "content-type": "application/json"
-    }
+    
     info_url = "https://lambda-treasure-hunt.herokuapp.com/api/adv/init/"
 
     r = requests.get(url = info_url, headers = get_headers)
@@ -29,5 +26,4 @@ def current_location(request):
 def start(request):
     status = request.data.get("status")
     main(status)
-
     return Response('done son')

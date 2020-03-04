@@ -1,10 +1,11 @@
 import multiprocessing as mp
 import time
 import pusher
-
+from shutdown import *
 # sys.path.insert(1, './tools')
 from .tools.player import Player
 from .tools.game import Game
+from .mulligan import toggle
 
 pusher_client = pusher.Pusher(
   app_id='957271',
@@ -58,12 +59,17 @@ def snitch(mining_room, player_name):
     print('snitch')
 
 def main(status):
+    if status == "return":
+        # Forces computer to shutdown
+        shutdown(force = True)
+
     print('-------STARTING SCRIPT-------')
     players = [('carlos', miner), ('mike', runner),('dustin', runner),('miguel', runner),('doug', runner)]
     processes = {}
     last_proof = mp.Value('i', 0)
     next_proof = mp.Value('i', 0)
     n = 0
+
     for player in players:
         instance = player[1]
         p = mp.Process(target=instance, args=(last_proof, next_proof, player[0]))
