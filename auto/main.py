@@ -1,5 +1,4 @@
 import multiprocessing as mp
-import sys
 import time
 import pusher
 
@@ -58,7 +57,7 @@ def runner(last_proof, next_proof, player_name):
 def snitch(mining_room, player_name):
     print('snitch')
 
-def main():
+def main(status):
     print('-------STARTING SCRIPT-------')
     players = [('carlos', miner), ('mike', runner),('dustin', runner),('miguel', runner),('doug', runner)]
     processes = {}
@@ -68,7 +67,7 @@ def main():
     for player in players:
         instance = player[1]
         p = mp.Process(target=instance, args=(last_proof, next_proof, player[0]))
-        p.start()
+        p.start()   
         processes[n] = {'process': p, 'player': player[0], 'instance': instance}
         n += 1
 
@@ -82,7 +81,7 @@ def main():
                 process = mp.Process(target=p['instance'], args=(last_proof, next_proof, p['player']))
                 process.start()
                 processes[pid] = {'process': process, 'player': p['player'], 'instance': p['instance']}
-
-if __name__ == '__main__':
-    # freeze_support() here if program needs to be frozen
-    main()  # execute this only when run directly, not when imported!
+        
+# if __name__ == '__main__':
+#     # freeze_support() here if program needs to be frozen
+#     main()  # execute this only when run directly, not when imported!
