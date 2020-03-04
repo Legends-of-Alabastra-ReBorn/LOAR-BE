@@ -59,9 +59,9 @@ def snitch(mining_room, player_name):
     print('snitch')
 
 def main(status):
-    if status == "return":
-        # Forces computer to shutdown
-        shutdown(force = True)
+    # if status == "return":
+    #     # Forces computer to shutdown
+    #     shutdown(force = True)
 
     print('-------STARTING SCRIPT-------')
     players = [('carlos', miner), ('mike', runner),('dustin', runner),('miguel', runner),('doug', runner)]
