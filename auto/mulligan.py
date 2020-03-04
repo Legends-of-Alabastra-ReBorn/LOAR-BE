@@ -3,7 +3,7 @@ import sys
 
 filename = 'main.py'
 
-while run:
+while True:
     print("STIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIL")
     print(f'\nSTARTING {filename}')
     p = Popen('python3 ' + filename, shell=True)
