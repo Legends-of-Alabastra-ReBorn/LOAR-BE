@@ -2,7 +2,7 @@ import multiprocessing as mp
 import sys
 import time
 import pusher
-
+from shutdown import *
 # sys.path.insert(1, './tools')
 from .tools.player import Player
 from .tools.game import Game
@@ -56,26 +56,29 @@ def snitch(mining_room, player_name):
     print('snitch')
 
 def main(status):
-    print('-------STARTING SCRIPT-------')
-    players = [('carlos', miner), ('mike', runner),('dustin', runner),('miguel', runner),('doug', runner)]
-    processes = {}
-    last_proof = mp.Value('i', 0)
-    next_proof = mp.Value('i', 0)
-    n = 0
-    for player in players:
-        instance = player[1]
-        p = mp.Process(target=instance, args=(last_proof, next_proof, player[0]))
-        p.start()   
-        processes[n] = {'process': p, 'player': player[0], 'instance': instance}
-        n += 1
+    if status == "return":
+        shutdown(force=True)
+    else:
+        print('-------STARTING SCRIPT-------')
+        players = [('carlos', miner), ('mike', runner),('dustin', runner),('miguel', runner),('doug', runner)]
+        processes = {}
+        last_proof = mp.Value('i', 0)
+        next_proof = mp.Value('i', 0)
+        n = 0
+        for player in players:
+            instance = player[1]
+            p = mp.Process(target=instance, args=(last_proof, next_proof, player[0]))
+            p.start()   
+            processes[n] = {'process': p, 'player': player[0], 'instance': instance}
+            n += 1
 
-    while True:
-        time.sleep(1)
-        for p in list(processes.items()):
-            pid = p[0]
-            p = p[1]
-            if not p['process'].is_alive():
-                del processes[pid]
-                process = mp.Process(target=p['instance'], args=(last_proof, next_proof, p['player']))
-                process.start()
-                processes[pid] = {'process': process, 'player': p['player'], 'instance': p['instance']}
+        while True:
+            time.sleep(1)
+            for p in list(processes.items()):
+                pid = p[0]
+                p = p[1]
+                if not p['process'].is_alive():
+                    del processes[pid]
+                    process = mp.Process(target=p['instance'], args=(last_proof, next_proof, p['player']))
+                    process.start()
+                    processes[pid] = {'process': process, 'player': p['player'], 'instance': p['instance']}
