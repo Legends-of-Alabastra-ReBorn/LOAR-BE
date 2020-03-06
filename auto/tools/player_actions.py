@@ -89,8 +89,8 @@ def Traverse(player, destination, take_items=False, use_abilities=True):
     abilities = player.abilities if use_abilities else []
     #find a path to the destination
     path = shortest_path(player.current_room, destination, abilities)
-    pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f'{player.name} is traveling to room {destination}'})
-    pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f"{player.name}'s path: {path}" })
+    # pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f'{player.name} is traveling to room {destination}'})
+    # pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f"{player.name}'s path: {path}" })
     print(f'{player.name} is traveling to room {destination}')
     print(f"{player.name}'s path: {path}")
 
@@ -100,7 +100,7 @@ def Traverse(player, destination, take_items=False, use_abilities=True):
         #must be faster to teleport to the beginning
         if path[0] is 'recall' and 'recall' in abilities:
             player.recall()
-            pusher_client.trigger('my-channel', 'my-event', { 'player': f'{player.name}', 'message':f'{player.name} recalled to room 0' })
+            pusher_client.trigger('my-channel', 'my-event', { 'player': f'{player.name}', 'room': '0', 'message':f'{player.name} recalled to room 0' })
             print(f'{player.name} recalled to room 0')
 
         elif 'dash' in abilities and len(path) > 1 and path[0][1] == path[1][1]:
@@ -111,12 +111,12 @@ def Traverse(player, destination, take_items=False, use_abilities=True):
                 else: break
             room_info = player.dash_to(current_direction, room_ids)
             print(f'{player.name} dashed through {room_ids} to room {room_ids[-1]}')
-            pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f'{player.name} dashed through {room_ids} to room {room_ids[-1]}' })
+            pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'room': f'{room_ids[-1]}', 'message': f'{player.name} dashed through {room_ids} to room {room_ids[-1]}' })
         
         else:
             room_info = player.move_to(path[0][1], path[0][0])
             print(f'{player.name} moved {path[0][1]} to room {path[0][0]}')
-            pusher_client.trigger('my-channel', 'my-event', { 'player': f'{player.name}', 'message': f'{player.name} moved {path[0][1]} to room {path[0][0]}' })
+            pusher_client.trigger('my-channel', 'my-event', { 'player': f'{player.name}', 'room': f'{path[0][0]}', 'message': f'{player.name} moved {path[0][1]} to room {path[0][0]}' })
         
         if take_items:
             if 'items' in room_info:
@@ -126,4 +126,4 @@ def Traverse(player, destination, take_items=False, use_abilities=True):
         path = shortest_path(player.current_room, destination, abilities)
     
     print(f'{player.name} has arrived at room {destination}.')
-    pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f'{player.name} has arrived at room {destination}.' })
+    pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'room': f'{destination}' })
