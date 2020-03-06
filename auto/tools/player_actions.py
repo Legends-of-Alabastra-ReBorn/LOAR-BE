@@ -109,7 +109,7 @@ def Traverse(player, destination, take_items=False, use_abilities=True):
                 else: break
             room_info = player.dash_to(current_direction, room_ids)
             print(f'{player.name} dashed through {room_ids} to room {room_ids[-1]}')
-            pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'room': f'{room_ids[-1]}', 'message': f'{player.name} dashed through {room_ids} to room {room_ids[-1]}' })
+            pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'room': f'{room_ids[-1]}', 'message': f'{player.name} dashed through rooms {room_ids} to room {room_ids[-1]}' })
         
         else:
             room_info = player.move_to(path[0][1], path[0][0])
@@ -124,4 +124,4 @@ def Traverse(player, destination, take_items=False, use_abilities=True):
         path = shortest_path(player.current_room, destination, abilities)
     
     print(f'{player.name} has arrived at room {destination}.')
-    pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'room': f'{destination}' })
+    pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'room': f'{destination}', 'message': f'{player.name} has arrived at room {destination}.'})
