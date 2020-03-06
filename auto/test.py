@@ -2,6 +2,14 @@ import multiprocessing as mp
 import sys
 import time
 
+pusher_client = pusher.Pusher(
+  app_id='957271',
+  key='486260c7fadf87293227',
+  secret='d2ba08d29c8aa4df42ef',
+  cluster='us2',
+  ssl=True
+)
+
 sys.path.insert(1, './tools')
 from player import Player
 from game import Game
@@ -14,9 +22,11 @@ def miner(last_proof, next_proof, miner_name):
         time.sleep(1)
         if current_proof != last_proof.value:
             current_proof = last_proof.value
+            
             print(f'{miner_name} is mining with proof {current_proof}...')
             miner.mine(current_proof)
             print(f'{miner_name} found proof {miner.get_next_proof()}')
+            pusher_client.trigger('my-channel', 'my-event', {'miner': f'{miner_name}', 'message': f'{miner_name} found proof {miner.get_next_proof()}'})
             next_proof.value = miner.get_next_proof()
 
 def runner(last_proof, next_proof, player_name):
