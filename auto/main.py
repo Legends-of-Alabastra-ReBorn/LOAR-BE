@@ -45,7 +45,7 @@ def runner(last_proof, next_proof, player_name):
             res = player.send_proof(proof)
             if len(res['errors']) == 0:
                 print(f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}')
-                pusher_client.trigger('my-channel', 'my-event', {'message': f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}'})
+                pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}'})
                 player.last_proof()
                 last_proof.value = player.get_last_proof()
                 break
@@ -56,11 +56,10 @@ def snitch(mining_room, player_name):
     print('snitch')
 
 def main(status):
-    if status == "return":
-        shutdown(force=True)
-    else:
+
+    while status == "return":
         print('-------STARTING SCRIPT-------')
-        players = [('carlos', miner), ('mike', runner),('dustin', runner),('miguel', runner),('doug', runner)]
+        players = [('carlos', miner), ('mike', runner),('miguel', runner),('doug', runner)]
         processes = {}
         last_proof = mp.Value('i', 0)
         next_proof = mp.Value('i', 0)
