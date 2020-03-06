@@ -1,11 +1,13 @@
 import multiprocessing as mp
 import sys
+import requests
 import time
 import pusher
 from shutdown import *
 # sys.path.insert(1, './tools')
 from .tools.player import Player
 from .tools.game import Game
+from .tools.player_info import Get_Player_Token
 
 pusher_client = pusher.Pusher(
   app_id='957271',
@@ -26,7 +28,9 @@ def miner(last_proof, next_proof, miner_name):
             miner.mine(current_proof)
             print(f'{miner_name} found proof {miner.get_next_proof()}')
             next_proof.value = miner.get_next_proof()
+
 def runner(last_proof, next_proof, player_name):
+
     print(f'initializing runner {player_name}')
     player = Player(player_name)
     player.last_proof()
@@ -45,7 +49,7 @@ def runner(last_proof, next_proof, player_name):
             res = player.send_proof(proof)
             if len(res['errors']) == 0:
                 print(f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}')
-                pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name.upper()}', 'coins':f'{player.coins}',  'message': f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}'})
+                pusher_client.trigger('my-channel', 'my-event', { 'coin_mined_by': f'{player.name.upper()}', 'coins':f'{player.coins}',  'message': f'{player.name.upper()} MINED A COIN -- TOTAL: {player.coins}'})
                 player.last_proof()
                 last_proof.value = player.get_last_proof()
                 break
@@ -56,10 +60,25 @@ def snitch(mining_room, player_name):
     print('snitch')
 
 def main(status):
-    if status == "return":
-        return 
-    else:
         print('-------STARTING SCRIPT-------')
+
+        mike_header = {"Authorization": f'{Get_Player_Token("mike")}'}
+        miguel_header = {"Authorization": f'{Get_Player_Token("miguel")}'}
+        douglas_header = {"Authorization": f'{Get_Player_Token("doug")}'}
+        # dustin_header = {"Authorization": f'{Get_Player_Token("dustin")}'}
+
+        endpoint = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/'
+
+        mikes_location = requests.get(url = endpoint, headers = mike_header).json()
+        miguel_location = requests.get(url = endpoint, headers = miguel_header).json()
+        doug_location = requests.get(url = endpoint, headers = douglas_header).json()
+        # dustin_location = requests.get(url = endpoint, headers = dustin_header).json()
+        mike = mikes_location['room_id']
+        miguel = miguel_location['room_id']
+        doug = doug_location['room_id']
+        
+        pusher_client.trigger('my-channel', 'init', { 'mike_room': f'{mike}', 'miguel_room':  f'{miguel}', 'doug_room':  f'{doug}'})
+
         players = [('carlos', miner), ('mike', runner),('miguel', runner),('doug', runner)]
         processes = {}
         last_proof = mp.Value('i', 0)

@@ -89,8 +89,6 @@ def Traverse(player, destination, take_items=False, use_abilities=True):
     abilities = player.abilities if use_abilities else []
     #find a path to the destination
     path = shortest_path(player.current_room, destination, abilities)
-    # pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f'{player.name} is traveling to room {destination}'})
-    # pusher_client.trigger('my-channel', 'my-event', {'player': f'{player.name}', 'message': f"{player.name}'s path: {path}" })
     print(f'{player.name} is traveling to room {destination}')
     print(f"{player.name}'s path: {path}")
 

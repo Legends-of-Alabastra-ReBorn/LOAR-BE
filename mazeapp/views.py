@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 import requests
 import sys
 sys.path.append('..')
-from auto.main import main
+from auto.main import main, miner
 
 @api_view(["POST"])
 def current_location(request):
