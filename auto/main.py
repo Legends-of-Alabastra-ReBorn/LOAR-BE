@@ -59,7 +59,7 @@ def runner(last_proof, next_proof, player_name):
 def snitch(mining_room, player_name):
     print('snitch')
 
-def main(status):
+def main():
         print('-------STARTING SCRIPT-------')
 
         mike_header = {"Authorization": f'{Get_Player_Token("mike")}'}
@@ -76,7 +76,7 @@ def main(status):
         mike = mikes_location['room_id']
         miguel = miguel_location['room_id']
         doug = doug_location['room_id']
-        
+
         pusher_client.trigger('my-channel', 'init', { 'mike_room': f'{mike}', 'miguel_room':  f'{miguel}', 'doug_room':  f'{doug}'})
 
         players = [('carlos', miner), ('mike', runner),('miguel', runner),('doug', runner)]

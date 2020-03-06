@@ -22,8 +22,7 @@ def current_location(request):
     return Response(data)
 
 
-@api_view(["POST"])
+@api_view(["GET"])
 def start(request):
-    status = request.data.get("status")
-    main(status)
+    main()
     return Response('done son')
