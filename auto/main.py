@@ -59,7 +59,7 @@ def runner(last_proof, next_proof, player_name):
 def snitch(mining_room, player_name):
     print('snitch')
 
-def main(status):
+def main():
         print('-------STARTING SCRIPT-------')
 
         mike_header = {"Authorization": f'{Get_Player_Token("mike")}'}
