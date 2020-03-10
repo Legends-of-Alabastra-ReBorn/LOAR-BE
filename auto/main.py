@@ -65,14 +65,14 @@ def main():
         mike_header = {"Authorization": f'{Get_Player_Token("mike")}'}
         miguel_header = {"Authorization": f'{Get_Player_Token("miguel")}'}
         douglas_header = {"Authorization": f'{Get_Player_Token("doug")}'}
-        # dustin_header = {"Authorization": f'{Get_Player_Token("dustin")}'}
+        dustin_header = {"Authorization": f'{Get_Player_Token("dustin")}'}
 
         endpoint = 'https://lambda-treasure-hunt.herokuapp.com/api/adv/init/'
 
         mikes_location = requests.get(url = endpoint, headers = mike_header).json()
         miguel_location = requests.get(url = endpoint, headers = miguel_header).json()
         doug_location = requests.get(url = endpoint, headers = douglas_header).json()
-        # dustin_location = requests.get(url = endpoint, headers = dustin_header).json()
+        dustin_location = requests.get(url = endpoint, headers = dustin_header).json()
         mike = mikes_location['room_id']
         miguel = miguel_location['room_id']
         doug = doug_location['room_id']
