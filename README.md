@@ -15,7 +15,9 @@ Well you're gonna want python and a computer of some sort.
 
 ## Deployment
 
-To test out on localhost, py manage.py runserver. Repo is deployed live on Heroku:  
+To test out on localhost, in the command line: py manage.py runserver 
+
+Repo is deployed live on Heroku:  
 https://alabastra-reborn.herokuapp.com/  
 
 ## Built With
