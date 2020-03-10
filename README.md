@@ -1,6 +1,6 @@
 # Lambda Treasure Hunt Ultimate Backend 5000
 
-This is the most powerful mining operation Lambda School has ever seen. Build in failsafes, the ability to run up to 4 players at a time,
+This is the most powerful mining operation Lambda School has ever seen. Built in failsafes, the ability to run up to 4 players at a time,
 and all the attitude you could ask for.
 
 Brought to you by the Legends of Alabastra.
@@ -15,7 +15,8 @@ Well you're gonna want python and a computer of some sort.
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+To test out on localhost, py manage.py runserver. Repo is deployed live on Heroku:  
+https://alabastra-reborn.herokuapp.com/  
 
 ## Built With
 
